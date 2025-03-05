@@ -46,7 +46,7 @@ end perform_keystroke
 
 -- Main
 -- This handler is called by Alfred with the query (not used in this script)
-on alfred_script(query)
+on run argv
     -- Get the current folder path from Finder
     tell application "Finder"
         set currentFolder to (folder of the front window as alias)
@@ -65,4 +65,4 @@ on alfred_script(query)
 
     -- Send the change directory command to Warp
     send_command("cd " & quoted form of currentPath)
-end alfred_script
+end run
