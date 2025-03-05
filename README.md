@@ -15,7 +15,3 @@ Alfred workflow to open current Finder window in Terminal/iTerm and vice versa.
 | `pi`    | Open current **Path Finder** directory in **iTerm** |
 | `ip`    | Open current **iTerm** directory in **Path Finder** |
 | `fw`    | Open current **Finder** directory in **Warp** |
-
----
-
-This workflow was heavily inspired by [ssgreg's *Terminal in Finder's folder*](https://github.com/ssgreg/AlfredWorkflows/ "ssgreg/AlfredWorkflows · GitHub").
