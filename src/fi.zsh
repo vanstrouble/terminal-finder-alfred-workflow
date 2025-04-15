@@ -4,7 +4,9 @@
 current_path=$(osascript -e 'tell application "Finder" to if (count of windows) > 0 then get POSIX path of (target of front window as text)')
 
 # Check if a valid path was obtained
-if [[ -n "$current_path" ]]; then
+if [[ -z "$current_path" ]]; then
+    echo "Could not get the path or there are no open Finder windows."
+else
     echo "Current path: $current_path"
 
     # Use a more precise approach to handle the state of iTerm
@@ -43,6 +45,4 @@ if [[ -n "$current_path" ]]; then
         end tell
     end tell
 EOF
-else
-    echo "Could not get the path or there are no open Finder windows."
 fi
