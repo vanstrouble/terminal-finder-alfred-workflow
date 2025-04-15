@@ -7,37 +7,33 @@ current_path=$(osascript -e 'tell application "Finder" to if (count of windows) 
 if [[ -n "$current_path" ]]; then
     echo "Current path: $current_path"
 
-    # Use Terminal.app instead of iTerm
+    # Use Terminal.app with improved tab creation
     osascript <<EOF
-    -- First check if Terminal is open
-    set isRunning to false
     try
-        tell application "System Events" to set isRunning to exists (processes where name is "Terminal")
+        tell application "Terminal"
+            activate
+
+            if (count of windows) = 0 then
+                # No windows exist, create a new one
+                do script "cd \"${current_path}\""
+            else
+                # Create a new tab using keyboard shortcut regardless of current state
+                tell application "System Events"
+                    tell process "Terminal"
+                        keystroke "t" using command down
+                    end tell
+                end tell
+
+                # Give the new tab time to initialize
+                delay 0.3
+
+                # Change to the desired directory in the newest tab
+                do script "cd \"${current_path}\"" in front window
+            end if
+        end tell
+    on error errMsg
+        display dialog "Error: " & errMsg
     end try
-
-    tell application "Terminal"
-        -- Open application first if it is closed
-        if not isRunning then
-            -- Open application and wait a moment for it to initialize
-            launch
-            delay 0.5
-        end if
-
-        -- Activate Terminal
-        activate
-
-        -- Check if there are windows
-        if (count of windows) = 0 then
-            -- Create a new window
-            do script ""
-        else
-            -- There are already windows, create a new tab/window
-            do script ""
-        end if
-
-        -- Navigate to the directory in the current session
-        do script "cd \"${current_path}\"" in front window
-    end tell
 EOF
 else
     echo "Could not get the path or there are no open Finder windows."
